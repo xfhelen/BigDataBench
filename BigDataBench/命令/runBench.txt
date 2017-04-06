@@ -1,0 +1,96 @@
+下载benchmark和数据:
+wget http://prof.ict.ac.cn/bdb_uploads/bdb_3_1/packages/BigDataBench_MPI_V3.1.tar.gz
+tar -zxvf BigDataBench_MPI_V3.1.tar.gz
+
+
+生成数据：
+source conf.properties
+cd Bench/BigDataBench_MPI_V3.1/BigDataGeneratorSuite/Text_datagen
+tar -zxvf gsl-1.15.tar.gz
+cd gsl-1.15
+./configure
+make
+make install
+
+LD_LIBRARY_PATH=/usr/local/lib
+export LD_LIBRARY_PATH
+
+
+运行：
+cd BigDataBench_MPI_V3.1/BigDataGeneratorSuite/Text_datagen/
+vim gen_text_data.sh
+#!/bin/sh --> #!/bin/bash
+
+cd WORKLOAD_PATH
+
+1.MicroBench - ***********ok*******
+
+mpirun -n 12 ./mpi_sort data-sort/in output
+mpirun -n 12 ./mpi_grep data-grep/in abc
+mpirun -n 12 ./mpi_wordcount data-wordcount/in
+
+
+2.PageRank(Hadoop)
+注释 hadoop dfs rmr*
+但是第一条不注释
+./run_PageRank.sh 10 （10代表gen data的迭代数）
+
+3.naivebayes
+mpirun -n 12 ./MPI_NB_predict -m train_model -i data-naivebayes -o output_file
+
+4.K-means:
+mpirun -n 12 ./mpi_main -i data-Kmeans -n 2 -o result
+
+5.SNS-CC(Hadoop)
+注释hadoop dfs rmr*
+./run_connectedComponents.sh 10
+
+6.Recommendation（hadoop）
+注释./genData_recommendator.sh 中 $HADOOP_HOME/bin/hadoop fs -rmr*
+注释./run_recommendator 中 hadoop fs -rmr *
+./run_recommendator 10 （10表示迭代数）
+
+
+7.Interactive-Query（Hadoop）
+cd ~/Benchmarks/BigDataBench_V3.1_Hadoop_Hive/BigDataGeneratorSuite/Table_datagen/personal_generator/
+make
+cd ../e-com
+./generate_table.sh
+修改./gen_data.sh
+把$BigData都替换成~/Benchmarks/BigDataBench_V3.1_Hadoop_Hive
+./run_AnalysiticWorkload.sh
+
+8. Interactive-MicroBenchmarks
+cd ~/Benchmarks/BigDataBench_V3.1_Hadoop_Hive/BigDataGeneratorSuite/Table_datagen/personal_generator/
+make
+cd ../e-com
+./generate_table.sh
+修改./gen_data.sh
+把$BigData都替换成~/Benchmarks/BigDataBench_V3.1_Hadoop_Hive
+./run_MicroBenchmarks.sh
+
+9.mpiBLAST -------lalal先跑
+cd /home/mpiblast-install/shared/storage
+分割数据
+mpiformatdb -N 16 -i est.fa -o T
+运行
+mpirun -n 12 mpiblast -p blastn -d est.fa -i est.fa -o result
+
+10.multi-media - DBN - parallel application - run together
+cd Multimedia-MPI/DBN/src
+run DBN：mpirun -n 12 ./DBN
+run RBM：mpirun -n 12 ./RBM
+run StackedRBMS：mpirun -n 12 ./StackedRBMS
+run BP4：mpirun -n 12 ./BP
+
+
+
+
+
+
+
+
+
+
+
+

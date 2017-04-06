@@ -1,0 +1,49 @@
+wget http://www.mpiblast.org/downloads/files/mpiBLAST-1.6.0.tgz
+tar -zxvf mpiBLAST-1.6.0.tgz
+cd mpiblast-1.6.0/
+mkdir /home/mpiblast-install
+mv * /home/mpiblast-install
+cd /home/mpiblast-install
+
+下载ncbi：
+wget ftp://ftp.ncbi.nih.gov/toolbox/ncbi_tools/old/20061015/ncbi.tar.gz
+tar -zxvf ncbi.tar.gz
+mv ncbi /home/mpiblast-install/ncbi/make/
+
+cd /home/mpiblast-install
+apt-get install csh
+./ncbi/make/makedis.csh
+如果运行正确，显示如下：
+Put the date stamp to the file ../VERSION
+*********************************************************
+*The new binaries are located in ./ncbi/build/ directory*
+*********************************************************
+
+./configure
+make
+make install
+which mpiblast
+updatedb
+locate mpiblast | grep -v src
+
+vim /root/.ncbirc
+Adding:
+[mpiBLAST]
+Shared=/home/mpiblast-install/shared/storage
+Local=/home/mpiblast-install/local/storage
+mkdir -P /home/mpiblast-install/shared/storage
+mkdir -P /home/mpiblast-install/local/storage
+
+
+运行mpiblast
+下载数据：
+wget http://prof.ict.ac.cn/bdb_uploads/Assembly_of_the_human_genome_data.tar.gz
+tar -zxvf Assembly_of_the_human_genome_data.tar.gz
+cd Assembly_of_the_human_genome_data
+把数据移动到shared文件夹中：
+mv * /home/mpiblast-install/shared/storage
+把数据分割成不同的数据段（已完成）
+cd /home/mpiblast-install/shared/storage
+mpiformatdb -N 16 -i est.fa -o T
+运行：
+mpirun -n 12 mpiblast -p blastn -d est.fa -i est.fa -o result

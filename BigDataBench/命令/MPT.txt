@@ -1,0 +1,15 @@
+Ð¶ÔØÈí¼þ sudo apt-get remove --auto-remove gfortran
+
+apt-get install build-essential
+apt-get install g++
+apt-get install gcc
+sudo apt-get install fort77
+apt-get install wget
+apt-get install vim
+apt-get update
+
+cd ~
+wget http://www.mpich.org/static/downloads/1.5/mpich2-1.5.tar.gz
+tar -zxvf mpich2-1.5.tar.gz
+mkdir /home//home/mpich2-ins
+./configure --prefix=/home/mpich2-ins/ 2>&1 | tee c.txt

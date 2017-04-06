@@ -1,0 +1,21 @@
+Ð¶ÔØÈí¼þ sudo apt-get remove --auto-remove gfortran
+
+apt-get install vim
+apt-get install build-essential
+apt-get install wget
+apt-get update
+apt-get install gfortran
+
+cd ~
+wget http://www.mpich.org/static/downloads/3.2/mpich-3.2.tar.gz
+tar -zxvf mpich.tar.gz
+cd mpich-3.2
+mkdir /home/mpich2-install
+./configure ¨Cprefix=/home/mpich2-install 2>&1 | tee c.txt
+make
+make install
+vim ~/.bashrc
+export PATH=$PATH:/home/mpich2-install/bin
+source ~/.bashrc
+which mpicc
+which mpic++

@@ -1,0 +1,11 @@
+wget https://archive.apache.org/dist/mahout/0.6/mahout-distribution-0.6.tar.gz
+tar -zxvf mahout-distribution-0.6.tar.gz
+mkdir /usr/local/mahout
+cd mahout-distribution-0.6.tar.gz
+mv * /usr/local/mahout
+vim ~/.bashrc
+Adding:
+export MAHOUT_HOME=/usr/local/mahout
+export PATH=$PATH:$MAHOUT_HOME/bin/
+source ~/.bashrc
+echo $MAHOUT_HOME

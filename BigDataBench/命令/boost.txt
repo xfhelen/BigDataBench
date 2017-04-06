@@ -1,0 +1,12 @@
+wget http://sourceforge.net/projects/boost/files/boost/1.43.0/boost_1_43_0.tar.gz
+tar zxvf boost_1_43_0.tar.gz
+cd boost_1_43_0
+
+查看以下文件是否存在，存在则删除
+rm -rf /usr/include/boost/
+rm -rf /usr/lib/libboost*
+
+
+./bjam -sHAVE_ICU=1
+./bjam install –prefix=/usr
+ldconfig

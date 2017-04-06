@@ -1,0 +1,14 @@
+wget https://archive.apache.org/dist/hive/hive-0.9.0/hive-0.9.0-bin.tar.gz
+tar -zxvf hive-0.9.0-bin.tar.gz
+mkdir /usr/local/hive
+cd hive-0.9.0-bin
+mv * /usr/local/hive
+cd /usr/local/hive
+vim ~/.bashrc
+Adding:
+export HIVE_HOME=/usr/local/hive
+export PATH=$PATH:$HIVE_HOME/bin/
+
+source ~/.bashrc
+echo $HIVE_HOME
+
